@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
+  <title>Type Ahead Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,9 +16,46 @@
       <li>or a state</li>
     </ul>
   </form>
+
   <script>
     const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    let citiesArray = [];
+
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => citiesArray.push(...data));
+
+    function findMatches(searchString, arrayToSearch) {
+      return arrayToSearch.filter(place => {
+        const regex = new RegExp(searchString, 'gi');
+
+        return place.city.match(regex) || place.state.match(regex);
+      });
+    }
+
+    function displayMatches() {
+      const matchesArray = findMatches(this.value, citiesArray);
+
+      const html = matchesArray.map(place => {
+        return `
+          <li>
+            <span class="name">${place.city}, ${place.state}</span>
+            <span class="population">${place.population}</span>
+          </li>
+        `;
+      }).join('');
+
+      suggestions.innerHTML = html;
+    }
+
+    const searchInput = document.querySelector('.search');
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
+    const suggestions = document.querySelector('.suggestions');
   </script>
+
 </body>
 
 </html>

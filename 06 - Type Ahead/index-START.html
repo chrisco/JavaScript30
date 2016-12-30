@@ -34,12 +34,9 @@
       });
     }
 
-    function numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-
     function displayMatches() {
       const matchesArray = findMatches(this.value, citiesArray);
+
       const html = matchesArray.map(place => {
         const regex = new RegExp(this.value, 'gi');
         const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
@@ -55,8 +52,10 @@
       suggestions.innerHTML = html;
     }
 
-    const searchInput = document.querySelector('.search');
-    const suggestions = document.querySelector('.suggestions');
+    // Via http://stackoverflow.com/a/2901298/175882
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 
     // Underscore.js Debounce function
     // via https://davidwalsh.name/javascript-debounce-function
@@ -73,10 +72,13 @@
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
-      };
-    };
+      }
+    }
 
     const debouncedDisplayMatches = debounce(displayMatches, 250);
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
 
     searchInput.addEventListener('change', debouncedDisplayMatches);
     searchInput.addEventListener('keyup', debouncedDisplayMatches);

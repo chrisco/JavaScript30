@@ -27,7 +27,6 @@ function skip() {
 }
 
 function handleRangeUpdate() {
-  console.log(this.value);
   video[this.name] = this.value;
 }
 
@@ -63,13 +62,12 @@ toggle.addEventListener('click', togglePlay);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
 let isMouseDown = false;
-ranges.forEach(range => range.addEventListener('mousemove', () => {
+ranges.forEach(range => range.addEventListener('mousemove', function () {
   if (!isMouseDown) return;
-  handleRangeUpdate();
-})); // FIXME: Not working yet. Making a noob mistake!
+  handleRangeUpdate.call(this);
+}));
 ranges.forEach(range => range.addEventListener('mousedown', () => isMouseDown = true));
 ranges.forEach(range => range.addEventListener('mouseup', () => isMouseDown = false));
-
 ranges.forEach(range => range.addEventListener('change', handleRangeUpdate))
 
 progressBar.addEventListener('click', scrub);

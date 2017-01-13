@@ -31,16 +31,16 @@ function handleRangeUpdate() {
 }
 
 function handleProgress() {
-  const percent = (video.currentTime / video.duration) * 100;
+  const percent = video.currentTime / video.duration * 100;
   progressBar.style.flexBasis = `${percent}%`;
 }
 
 function scrub(e) {
-  const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
+  const scrubTime = e.offsetX / progress.offsetWidth * video.duration;
   video.currentTime = scrubTime;
 }
 
-// TODO: Finish this
+// TODO: Finish this function
 function toggleFullScreen() {
   if (!isFullScreen) {
     console.log('Enter fullscreen');
@@ -62,16 +62,19 @@ toggle.addEventListener('click', togglePlay);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
 let isMouseDown = false;
-ranges.forEach(range => range.addEventListener('mousemove', function () {
-  if (!isMouseDown) return;
-  handleRangeUpdate.call(this);
-}));
+ranges.forEach(
+  range => range.addEventListener('mousemove', function() {
+    if (!isMouseDown)
+      return;
+    handleRangeUpdate.call(this);
+  })
+);
 ranges.forEach(range => range.addEventListener('mousedown', () => isMouseDown = true));
 ranges.forEach(range => range.addEventListener('mouseup', () => isMouseDown = false));
-ranges.forEach(range => range.addEventListener('change', handleRangeUpdate))
+ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
 
 progressBar.addEventListener('click', scrub);
-progressBar.addEventListener('mousemove', (e) => isMouseDown && scrub(e));
+progressBar.addEventListener('mousemove', e => isMouseDown && scrub(e));
 progressBar.addEventListener('mousedown', () => isMouseDown = true);
 progressBar.addEventListener('mouseup', () => isMouseDown = false);
 

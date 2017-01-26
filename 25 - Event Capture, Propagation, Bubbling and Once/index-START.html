@@ -9,8 +9,11 @@
 <body class="bod">
 
   <div class="one">
+    <p>one</p>
     <div class="two">
+      <p>two</p>
       <div class="three">
+        <p>three</p>
       </div>
     </div>
   </div>
@@ -46,6 +49,32 @@
 
   <button></button>
   <script>
+    const divs = document.querySelectorAll('div');
+
+    function logText(e) {
+      // Stops bubbling as after first event is fired:
+      // e.stopPropagation()
+
+      console.log(this.classList.value);
+    }
+
+    // By default, the events are 'captured' first (on the way down)
+    // and fired second as they 'bubble' up.
+    divs.forEach(div => div.addEventListener('click', logText));
+
+    // The addEventListener function takes an optional third argument object.
+    // Here we are using it to tell JS to fire the events during the 'capture' phase
+    // (the default of 'capture' is 'false')
+    // divs.forEach(div => div.addEventListener('click', logText, {
+    //   capture: true
+    // }));
+
+    // Use 'once' to removeEventListeners after first event is fired.
+    // Could be helpful for shopping cart buttons, for example.
+    // divs.forEach(div => div.addEventListener('click', logText, {
+    //   once: true
+    // }));
+
   </script>
 </body>
 

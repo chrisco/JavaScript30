@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Video Speed Scrubber</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="wrapper">
@@ -14,12 +16,12 @@
     </div>
   </div>
 
-<script>
-  const speed = document.querySelector('.speed');
-  const bar = speed.querySelector('.speed-bar');
-  const video = document.querySelector('.flex');
+  <script>
+    const speed = document.querySelector('.speed');
+    const bar = speed.querySelector('.speed-bar');
+    const video = document.querySelector('.flex');
 
-  function handleMove(e) {
+    function handleMove(e) {
       const y = e.pageY - this.offsetTop;
       const percent = y / this.offsetHeight;
       const min = 0.4;
@@ -31,8 +33,8 @@
       video.playbackRate = playbackRate;
     }
 
-  speed.addEventListener('mousemove', handleMove);
-
-</script>
+    speed.addEventListener('mousemove', handleMove);
+  </script>
 </body>
+
 </html>

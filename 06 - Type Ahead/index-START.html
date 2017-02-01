@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
+  <title>Type Ahead Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <form class="search-form">
@@ -14,9 +16,74 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-</script>
-  </body>
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    let citiesArray = [];
+
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => citiesArray.push(...data));
+
+    function findMatches(searchString, arrayToSearch) {
+      return arrayToSearch.filter(place => {
+        const regex = new RegExp(searchString, 'gi');
+
+        return place.city.match(regex) || place.state.match(regex);
+      });
+    }
+
+    function displayMatches() {
+      const matchesArray = findMatches(this.value, citiesArray);
+
+      const html = matchesArray.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+        return `
+          <li>
+            <span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${numberWithCommas(place.population)}</span>
+          </li>
+        `;
+      }).join('');
+
+      suggestions.innerHTML = html;
+    }
+
+    // Via http://stackoverflow.com/a/2901298/175882
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Underscore.js Debounce function
+    // via https://davidwalsh.name/javascript-debounce-function
+    function debounce(func, wait, immediate) {
+      var timeout;
+      return function () {
+        var context = this,
+          args = arguments;
+        var later = function () {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      }
+    }
+
+    const debouncedDisplayMatches = debounce(displayMatches, 250);
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', debouncedDisplayMatches);
+    searchInput.addEventListener('keyup', debouncedDisplayMatches);
+  </script>
+
+</body>
+
 </html>

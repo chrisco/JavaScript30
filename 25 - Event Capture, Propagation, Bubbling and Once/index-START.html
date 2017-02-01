@@ -1,45 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Understanding JavaScript's Capture</title>
 </head>
+
 <body class="bod">
 
   <div class="one">
+    <p>one</p>
     <div class="two">
+      <p>two</p>
       <div class="three">
+        <p>three</p>
       </div>
     </div>
   </div>
 
-<style>
-  html {
-    box-sizing: border-box;
-  }
-  *, *:before, *:after { box-sizing: inherit; }
+  <style>
+    html {
+      box-sizing: border-box;
+    }
 
-  div {
-    width:100%;
-    padding:100px;
-  }
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
 
-  .one {
-    background: thistle;
-  }
+    div {
+      width: 100%;
+      padding: 100px;
+    }
 
-  .two {
-    background:mistyrose;
-  }
+    .one {
+      background: thistle;
+    }
 
-  .three {
-    background:coral;
-  }
-</style>
+    .two {
+      background: mistyrose;
+    }
 
-<button></button>
-<script>
+    .three {
+      background: coral;
+    }
+  </style>
 
-</script>
+  <button></button>
+  <script>
+    const divs = document.querySelectorAll('div');
+
+    function logText(e) {
+      // Stops bubbling as after first event is fired:
+      // e.stopPropagation()
+
+      console.log(this.classList.value);
+    }
+
+    // By default, the events are 'captured' first (on the way down)
+    // and fired second as they 'bubble' up.
+    divs.forEach(div => div.addEventListener('click', logText));
+
+    // The addEventListener function takes an optional third argument object.
+    // Here we are using it to tell JS to fire the events during the 'capture' phase
+    // (the default of 'capture' is 'false')
+    // divs.forEach(div => div.addEventListener('click', logText, {
+    //   capture: true
+    // }));
+
+    // Use 'once' to removeEventListeners after first event is fired.
+    // Could be helpful for shopping cart buttons, for example.
+    // divs.forEach(div => div.addEventListener('click', logText, {
+    //   once: true
+    // }));
+
+  </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 # JavaScript30
 
-Starter Files + Completed solutions for the JavaScript 30 Day Challenge. 
+__Branches__
 
-(it's not up yet - soon though!)
+1. __master__: Starter Files + Completed solutions for the JavaScript 30 Day Challenge.
+2. __chris__: My solutions.
